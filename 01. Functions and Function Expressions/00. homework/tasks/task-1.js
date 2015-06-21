@@ -8,8 +8,20 @@
 
 */
 
-function sum() {
-	
+function sum(numbers) {
+	if (numbers.length === 0) {
+		return null;
+	}
+
+	return numbers.reduce(function (s, n) {
+		n = n*1;
+		if(isNaN(n)){
+			throw 'Error';
+		}
+		return s + n;
+	}, 0);
 }
 
 module.exports = sum;
+
+console.log(sum([1,2,3]));
