@@ -24,14 +24,79 @@ function solve() {
 	var library = (function () {
 		var books = [];
 		var categories = [];
+
+		function validateBookISBN(book) {
+			if (book.isbn) {
+				if (book.isbn.length !== 10 && book.isbn.length !== 13) {
+					throw new Error('Invalid book isbn');
+				}
+
+				if (books.some(function (item) {
+					return item.isbn === book.isbn;
+				})) {
+					throw new Error('Invalid book isbn');
+				}
+			} else {
+				throw new Error('Invalid book isbn');
+			}
+		}
+
+		function validateBookTitle(book){
+			if(books.some(function(item){
+				return item.title === book.title;
+			})){
+				throw new Error('Book with reapeating title is added');
+			}
+		}
+
+		function validateBookAuthor(book) {
+			if (book.author) {
+				if (book.author.length <= 0) {
+					throw new Error('Invalid book author');
+				}
+			} else {
+				throw new Error('Invalid book author');
+			}
+		}
+
 		function listBooks() {
-			return books;
+			if (arguments.length === 1) {
+				var obj = arguments[0];
+				if (books.some(function (book) {
+					return book.category === obj.category;
+				})) {
+					return  books.filter(function (book) {
+						return book.category === obj.category;
+					});
+				}
+
+				return [];
+			} else {
+				return books;
+			}
 		}
 
 		function addBook(book) {
 			book.ID = books.length + 1;
+			validateBookISBN(book);
+			validateBookAuthor(book);
+			validateBookTitle(book);
 			books.push(book);
+			addCategory(book.category);
 			return book;
+		}
+
+		function addCategory(category) {
+			if (category) {
+				if (!categories.some(function (item) {
+					return item === category;
+				})) {
+					categories.push(category);
+				}
+			} else {
+				throw new Error('Invalid category');
+
+			}
 		}
 
 		function listCategories() {
