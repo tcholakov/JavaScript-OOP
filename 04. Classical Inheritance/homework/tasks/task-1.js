@@ -17,9 +17,79 @@
 */
 function solve() {
 	var Person = (function () {
-		function Person() {
+		function validateName(name) {
+			if (name) {
+				if (name.length < 3 || name.length > 20) {
+					throw new Error('Invalid name lenght');
+				}
+			} else {
+				throw new Error('Name is undefined');
+			}
 		}
-		
+
+		function validateAge(age) {
+			if (age && typeof (age) === 'number') {
+				if (age < 0 || age > 150) {
+					throw new Error('Invalid age out of range');
+				}
+			} else {
+				throw new Error('Age is undefined');
+			}
+		}
+
+		function Person(firstname, lastname, age) {
+			this.firstname = firstname;
+			this.lastname = lastname;
+			this.fullname = this.firstname + ' ' + this.lastname;
+			this.age = age;
+		}
+
+		Object.defineProperty(Person.prototype, 'firstname', {
+			get: function () {
+				return this._firstname;
+			},
+			set: function (value) {
+				validateName(value);
+				this._firstname = value;
+			}
+		});
+
+		Object.defineProperty(Person.prototype, 'lastname', {
+			get: function () {
+				return this._lastname;
+			},
+			set: function (value) {
+				validateName(value);
+				this._lastname = value;
+			}
+		});
+
+		Object.defineProperty(Person.prototype, 'age', {
+			get: function () {
+				return this._age;
+			},
+			set: function (value) {
+				validateAge(value);
+				this._age = value;
+			}
+		});
+
+		Object.defineProperty(Person.prototype, 'fullname', {
+			get: function () {
+				return this._fullname;
+			},
+			set: function (value) {
+				this._fullname = value;
+				var arr = this.fullname.split(' ');
+				this.firstname = arr[0];
+				this.lastname = arr[1]; 
+			}
+		});
+
+		Person.prototype.introduce = function () {
+			return 'Hello! My name is ' + this.fullname + ' and I am ' + this.age + '-years-old';
+		}
+
 		return Person;
 	} ());
 	return Person;
