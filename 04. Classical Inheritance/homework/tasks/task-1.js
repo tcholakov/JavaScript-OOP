@@ -69,6 +69,7 @@ function solve() {
 				return this._age;
 			},
 			set: function (value) {
+				value = value * 1;
 				validateAge(value);
 				this._age = value;
 			}
@@ -82,7 +83,7 @@ function solve() {
 				this._fullname = value;
 				var arr = this.fullname.split(' ');
 				this.firstname = arr[0];
-				this.lastname = arr[1]; 
+				this.lastname = arr[1];
 			}
 		});
 
